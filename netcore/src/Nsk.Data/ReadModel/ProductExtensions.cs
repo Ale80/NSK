@@ -33,5 +33,10 @@ namespace Nsk.Data.ReadModel
         {
             return products.OrderByDescending(p => p.OrderDetails.Sum(d => d.Quantity));
         }
-    }
+
+		public static IQueryable<Product> Offering(this IQueryable<Product> products)
+		{
+			return products.OrderBy(p => p.OrderDetails.Sum(d => d.Quantity));
+		}
+	}
 }

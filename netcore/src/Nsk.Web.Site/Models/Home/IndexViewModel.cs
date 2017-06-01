@@ -6,7 +6,8 @@ namespace Nsk.Web.Site.Models.Home
     public class IndexViewModel
     {
         public IEnumerable<Nsk.Web.Site.Models.Shared.Product> BestSellingProducts { get; set; }
-        public IEnumerable<Category> Categories { get; set; }
+		public IEnumerable<Nsk.Web.Site.Models.Shared.Product> OfferingProducts { get; set; }
+		public IEnumerable<Category> Categories { get; set; }
 
         [Required]
         public string Query { get; set; }

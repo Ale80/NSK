@@ -31,7 +31,21 @@ namespace Nsk.Web.Site.WorkerServices
                                             SupplierName = p.Supplier.CompanyName,
                                             UnitPrice = p.UnitPrice
                                         };
-            model.Categories = from c in Database.Categories
+			model.OfferingProducts = from p in Database
+									   .Products
+									   .ForSale()
+									   .Offering()
+									   .Take(4)
+									 select new Nsk.Web.Site.Models.Shared.Product
+									 {
+										 Id = p.Id,
+										 Name = p.Name,
+										 SupplierId = p.Supplier.Id,
+										 SupplierName = p.Supplier.CompanyName,
+										 UnitPrice = p.UnitPrice
+									 };
+
+			model.Categories = from c in Database.Categories
                                orderby c.Name
                                select new IndexViewModel.Category
                                {
