@@ -8,6 +8,6 @@
         </a><br />
         by <a itemprop="url" href="@UrlBuilder.BuildProductsBySupplierPageUrl(product.SupplierId, product.SupplierName)"><span itemprop="seller">@product.SupplierName</span></a><br />
         <span itemprop="price"><del>@(product.UnitPrice.Value.ToString("0.00"))</del></span>
-		<span itemprop="price">@((product.UnitPrice.Value * 90 / 100).ToString("0.00"))</span>
+		<span itemprop="price">@Utilities.GetDiscountedPrice(product.UnitPrice.Value).ToString("0.00"))</span>
     </li>
 }
