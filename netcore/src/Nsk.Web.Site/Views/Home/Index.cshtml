@@ -26,13 +26,13 @@
 <div class="row">
     <h3>Best selling</h3>
     <ul class="list-inline">
-        @await Component.InvokeAsync("ProductList", new { products = Model.BestSellingProducts, isDefault = true })
+        @await Component.InvokeAsync("ProductList", new { products = Model.BestSellingProducts })
     </ul>
 </div>
 <div class="row">
 	<h3>Offering products</h3>
 	<ul class="list-inline">
-		@await Component.InvokeAsync("ProductList", new { products = Model.OfferingProducts, isDefault = false })
+		@await Component.InvokeAsync("ProductList", new { products = Model.OfferingProducts, offeringProducts = true })
 	</ul>
 </div>
 

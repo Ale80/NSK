@@ -17,16 +17,14 @@ namespace Nsk.Web.Site.ViewComponents
 			Database = database ?? throw new ArgumentNullException(nameof(database));
 		}
 
-		public IViewComponentResult Invoke(IEnumerable<Nsk.Web.Site.Models.Shared.Product> products, bool isDefault)
+		public IViewComponentResult Invoke(IEnumerable<Nsk.Web.Site.Models.Shared.Product> products, bool offeringProducts)
 		{
-			if (isDefault)
-			{
-				return View(products);
-			}
-			else
+			if (offeringProducts)
 			{
 				return View("Offering", products);
 			}
+
+			return View(products);
 		}
 
 
