@@ -12,5 +12,6 @@ namespace Nsk.Web.Site.Models.Shared
         public int SupplierId { get; set; }
         public string SupplierName { get; set; }
         public decimal? UnitPrice { get; set; }
+		public bool IsOffering { get; set; }
     }
 }

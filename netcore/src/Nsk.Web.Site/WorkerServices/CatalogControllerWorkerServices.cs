@@ -127,15 +127,17 @@ namespace Nsk.Web.Site.WorkerServices
                         }).SingleOrDefault();
             if(model!=null)
             {
-                model.Products = from p in Database.Products.ForSale().ByCategory(categoryId)
-                                 orderby p.Name
-                                 select new Nsk.Web.Site.Models.Shared.Product
-                                 {
-                                     Id = p.Id,
-                                     Name = p.Name,
-                                     SupplierId = p.SupplierId.Value,
-                                     SupplierName = p.Supplier.CompanyName,
-                                     UnitPrice = p.UnitPrice.Value
+				var offeringProductIds = Database.Products.ForSale().Offering().Select(p => p.Id).Take(4).ToList();
+				model.Products = from p in Database.Products.ForSale().ByCategory(categoryId)
+								 orderby p.Name
+								 select new Nsk.Web.Site.Models.Shared.Product
+								 {
+									 Id = p.Id,
+									 Name = p.Name,
+									 SupplierId = p.SupplierId.Value,
+									 SupplierName = p.Supplier.CompanyName,
+									 UnitPrice = p.UnitPrice.Value,
+									 IsOffering = offeringProductIds.Contains(p.Id)
                                  };
             }
 
