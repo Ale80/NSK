@@ -60,7 +60,8 @@ namespace Nsk.Web.Site.WorkerServices
 
         public ProductDetailViewModel GetProductDetailViewModel(int productId)
         {
-            var model = (from p in Database.Products.ForSale()
+			var offeringProductIds = Database.Products.ForSale().Offering().Select(p => p.Id).Take(_mySettings.OfferingProductsNumber).ToList();
+			var model = (from p in Database.Products.ForSale()
                          where p.Id == productId
                          select new ProductDetailViewModel()
                          {
@@ -72,9 +73,10 @@ namespace Nsk.Web.Site.WorkerServices
                              SupplierId = p.SupplierId.Value,
                              SupplierName = p.Supplier.CompanyName,
                              UnitsInStock = p.UnitsInStock.Value,
-                             UnitPrice = p.UnitPrice.Value
-                         }).SingleOrDefault();
-            model.RelatedProducts = from rp in Database.Products
+                             UnitPrice = p.UnitPrice.Value,
+							 IsOffering = offeringProductIds.Contains(p.Id)
+						 }).SingleOrDefault();
+			model.RelatedProducts = from rp in Database.Products
                                         .ForSale()
                                         .ByCategory(model.CategoryId)
                                         .BySupplier(model.SupplierId) 
@@ -83,8 +85,8 @@ namespace Nsk.Web.Site.WorkerServices
                                     select new ProductDetailViewModel.RelatedProduct() { 
                                         Id = rp.Id, 
                                         Name = rp.Name, 
-                                        UnitPrice = rp.UnitPrice.Value 
-                                    };
+                                        UnitPrice = rp.UnitPrice.Value						
+									};
             return model;
         }
 

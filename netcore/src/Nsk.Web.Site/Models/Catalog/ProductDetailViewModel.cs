@@ -28,11 +28,13 @@ namespace Nsk.Web.Site.Models.Catalog
         [DisplayName("Units in stock:")]
         public short UnitsInStock { get; set; }
 
-        public class RelatedProduct
+		public bool IsOffering { get; set; }
+
+		public class RelatedProduct
         {
             public int Id { get; set; }
             public string Name { get; set; }
-            public decimal UnitPrice { get; set; }
-        }
+            public decimal UnitPrice { get; set; }			
+		}
     }
 }
