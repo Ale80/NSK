@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
 using MvcCoreMate.Mvc.Model;
 using Nsk.Data.ReadModel;
 using Nsk.Web.Site.Models.Catalog;
@@ -11,11 +12,13 @@ namespace Nsk.Web.Site.WorkerServices
     public class CatalogControllerWorkerServices
     {
         public IDatabase Database { get; private set; }
+		private MySettings _mySettings;
 
-        public CatalogControllerWorkerServices(IDatabase database)
+		public CatalogControllerWorkerServices(IDatabase database, IOptions<MySettings> mySettings)
         {
             this.Database = database ?? throw new ArgumentNullException("database");
-        }
+			this._mySettings = mySettings.Value;
+		}
 
         public SearchViewModel GetSearchViewModel()
         {
@@ -127,7 +130,7 @@ namespace Nsk.Web.Site.WorkerServices
                         }).SingleOrDefault();
             if(model!=null)
             {
-				var offeringProductIds = Database.Products.ForSale().Offering().Select(p => p.Id).Take(4).ToList();
+				var offeringProductIds = Database.Products.ForSale().Offering().Select(p => p.Id).Take(_mySettings.OfferingProductsNumber).ToList();
 				model.Products = from p in Database.Products.ForSale().ByCategory(categoryId)
 								 orderby p.Name
 								 select new Nsk.Web.Site.Models.Shared.Product

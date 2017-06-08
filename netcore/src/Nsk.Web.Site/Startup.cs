@@ -97,7 +97,9 @@ namespace Nsk.Web.Site
             services.AddTransient<CartControllerWorkerServices>();
             services.AddTransient<CatalogControllerWorkerServices>();
             services.AddTransient<HomeControllerWorkerServices>();
-        }
+
+			services.Configure<MySettings>(options => Configuration.GetSection("MySettings").Bind(options));
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

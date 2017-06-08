@@ -1,4 +1,5 @@
-﻿using Nsk.Data.ReadModel;
+﻿using Microsoft.Extensions.Options;
+using Nsk.Data.ReadModel;
 using Nsk.Web.Site.Models.Home;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,13 @@ namespace Nsk.Web.Site.WorkerServices
     public class HomeControllerWorkerServices
     {
         public IDatabase Database { get; private set; }
+		private MySettings _mySettings;
 
-        public HomeControllerWorkerServices(IDatabase database)
+		public HomeControllerWorkerServices(IDatabase database, IOptions<MySettings> mySettings)
         {
             this.Database = database ?? throw new ArgumentNullException(nameof(database));
-        }
+			this._mySettings = mySettings.Value;
+		}
 
         public IndexViewModel GetIndexViewModel()
         {
@@ -35,7 +38,7 @@ namespace Nsk.Web.Site.WorkerServices
 									   .Products
 									   .ForSale()
 									   .Offering()
-									   .Take(4)
+									   .Take(_mySettings.OfferingProductsNumber)
 									 select new Nsk.Web.Site.Models.Shared.Product
 									 {
 										 Id = p.Id,
