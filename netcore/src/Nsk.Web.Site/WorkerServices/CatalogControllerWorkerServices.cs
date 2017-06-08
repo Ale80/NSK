@@ -12,12 +12,12 @@ namespace Nsk.Web.Site.WorkerServices
     public class CatalogControllerWorkerServices
     {
         public IDatabase Database { get; private set; }
-		private MySettings _mySettings;
+		private int _offeringProductsNumber;
 
 		public CatalogControllerWorkerServices(IDatabase database, IOptions<MySettings> mySettings)
         {
             this.Database = database ?? throw new ArgumentNullException("database");
-			this._mySettings = mySettings.Value;
+			this._offeringProductsNumber = mySettings.Value.OfferingProductsNumber;
 		}
 
         public SearchViewModel GetSearchViewModel()
@@ -60,7 +60,7 @@ namespace Nsk.Web.Site.WorkerServices
 
         public ProductDetailViewModel GetProductDetailViewModel(int productId)
         {
-			var offeringProductIds = Database.Products.ForSale().Offering().Select(p => p.Id).Take(_mySettings.OfferingProductsNumber).ToList();
+			var offeringProductIds = Database.Products.ForSale().Offering().Select(p => p.Id).Take(_offeringProductsNumber).ToList();
 			var model = (from p in Database.Products.ForSale()
                          where p.Id == productId
                          select new ProductDetailViewModel()
@@ -132,7 +132,7 @@ namespace Nsk.Web.Site.WorkerServices
                         }).SingleOrDefault();
             if(model!=null)
             {
-				var offeringProductIds = Database.Products.ForSale().Offering().Select(p => p.Id).Take(_mySettings.OfferingProductsNumber).ToList();
+				var offeringProductIds = Database.Products.ForSale().Offering().Select(p => p.Id).Take(_offeringProductsNumber).ToList();
 				model.Products = from p in Database.Products.ForSale().ByCategory(categoryId)
 								 orderby p.Name
 								 select new Nsk.Web.Site.Models.Shared.Product

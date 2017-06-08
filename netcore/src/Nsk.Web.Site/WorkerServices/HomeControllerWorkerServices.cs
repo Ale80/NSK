@@ -10,12 +10,12 @@ namespace Nsk.Web.Site.WorkerServices
     public class HomeControllerWorkerServices
     {
         public IDatabase Database { get; private set; }
-		private MySettings _mySettings;
+		private int _offeringProductsNumber;
 
 		public HomeControllerWorkerServices(IDatabase database, IOptions<MySettings> mySettings)
         {
             this.Database = database ?? throw new ArgumentNullException(nameof(database));
-			this._mySettings = mySettings.Value;
+			this._offeringProductsNumber = mySettings.Value.OfferingProductsNumber;
 		}
 
         public IndexViewModel GetIndexViewModel()
@@ -38,7 +38,7 @@ namespace Nsk.Web.Site.WorkerServices
 									   .Products
 									   .ForSale()
 									   .Offering()
-									   .Take(_mySettings.OfferingProductsNumber)
+									   .Take(_offeringProductsNumber)
 									 select new Nsk.Web.Site.Models.Shared.Product
 									 {
 										 Id = p.Id,
